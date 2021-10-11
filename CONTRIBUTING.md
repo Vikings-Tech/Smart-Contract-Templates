@@ -5,7 +5,8 @@ We really appreciate and value contributions. Please take 5' to review the items
 
 ## Contribution guidelines
 
-Please ensure that you are following the [Style Guide](https://docs.soliditylang.org/en/latest/style-guide.html) as suggested by solidity in their docs while creating your contracts.
+- Please ensure that you are following the [Style Guide](https://docs.soliditylang.org/en/latest/style-guide.html) as suggested by solidity in their docs while creating your contracts.
+- Add Comments to improve the readability of your contract. You can refer to the following [article](https://jeancvllr.medium.com/solidity-tutorial-all-about-comments-bc31c729975a)
 ## Creating Pull Requests (PRs)
 
 As a contributor, you are expected to fork this repository, work on your own fork and then submit pull requests. The pull requests will be reviewed and eventually merged into the main repo. See ["Fork-a-Repo"](https://help.github.com/articles/fork-a-repo/) for how this works.
