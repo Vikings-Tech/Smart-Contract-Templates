@@ -72,6 +72,11 @@ contract LPFarm is TokenWrapper, IRewardDistributionRecipientTokenOnly {
     _;
   }
 
+
+  /**
+   * @dev Updates user rewards
+   * @param account User to update
+   */
   modifier updateReward(address account) {
     rewardPerTokenStored = rewardPerToken();
     lastUpdateTime = lastTimeRewardApplicable();
@@ -82,6 +87,11 @@ contract LPFarm is TokenWrapper, IRewardDistributionRecipientTokenOnly {
     _;
   }
 
+  /**
+  * @dev Init the farm
+  * @param _stakeToken Token user needs to deposit
+  * @param _controller Controller contract address
+  */
   function initialize(address _stakeToken, address _controller)
   external
   {
@@ -94,10 +104,18 @@ contract LPFarm is TokenWrapper, IRewardDistributionRecipientTokenOnly {
     rewardRate = 0;
   }
 
+  /**
+   * @dev Check the last time when reward was considered active
+   * @returns Last eligible time of rewards
+   */
   function lastTimeRewardApplicable() public view returns (uint256) {
     return Math.min(block.timestamp, periodFinish);
   }
 
+  /**
+   * @dev Check how much rewards you can earn at this point of time
+   * @returns Rewards per deposited token
+   */
   function rewardPerToken()
   public
   view
@@ -116,6 +134,11 @@ contract LPFarm is TokenWrapper, IRewardDistributionRecipientTokenOnly {
     );
   }
 
+  /**
+   * @dev Check how much rewards the account has earned
+   * @param account Address to check
+   * @returns Rewards accumulated
+   */
   function earned(address account)
   public
   view
@@ -128,6 +151,10 @@ contract LPFarm is TokenWrapper, IRewardDistributionRecipientTokenOnly {
     .add(rewards[account]);
   }
 
+  /**
+   * @dev Deposit token
+   * @param amount Amount to deposit
+   */
   function stake(uint256 amount)
   public
   override
@@ -138,6 +165,10 @@ contract LPFarm is TokenWrapper, IRewardDistributionRecipientTokenOnly {
     emit Staked(msg.sender, amount);
   }
 
+  /**
+   * @dev Withdraw staked token
+   * @param amount Amount to withdraw
+   */
   function withdraw(uint256 amount)
   public
   override
@@ -148,6 +179,9 @@ contract LPFarm is TokenWrapper, IRewardDistributionRecipientTokenOnly {
     emit Withdrawn(msg.sender, amount);
   }
 
+  /**
+   * @dev Leave farm
+   */
   function exit()
   external
   {
@@ -155,6 +189,9 @@ contract LPFarm is TokenWrapper, IRewardDistributionRecipientTokenOnly {
     getReward();
   }
 
+  /**
+   * @dev Claim earned rewards
+   */
   function getReward()
   public
   updateReward(msg.sender)
@@ -167,6 +204,10 @@ contract LPFarm is TokenWrapper, IRewardDistributionRecipientTokenOnly {
     }
   }
 
+  /**
+   * @dev Controller notifies when the new reward is available
+   * @param reward Amount of reward token dedicated to this farm
+   */
   function notifyRewardAmount(uint256 reward)
   external
   override

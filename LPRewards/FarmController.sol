@@ -25,6 +25,10 @@ contract FarmController is OwnableUpgradeable {
 
   IERC20 public rewardToken;
 
+  /**
+   * @dev Init the contract
+   * @param token Initial reward token
+   */
   function initialize(address token)
   external
   {
@@ -32,6 +36,11 @@ contract FarmController is OwnableUpgradeable {
     rewardToken = IERC20(token);
   }
 
+  /**
+   * @dev Add new farm under management of this controller
+   * @param _lptoken Deposit token
+   * @returns farm Address of new farm
+   */
   function addFarm(address _lptoken)
   external
   onlyOwner
@@ -50,6 +59,10 @@ contract FarmController is OwnableUpgradeable {
     // it will just set the rates to zero before it get's it's own rate
   }
 
+  /**
+   * @dev Set farm reward rates
+   * @param _rates Proportions of reward allocation for each farm
+   */
   function setRates(uint256[] memory _rates)
   external
   onlyOwner
@@ -63,6 +76,11 @@ contract FarmController is OwnableUpgradeable {
     weightSum = sum;
   }
 
+  /**
+   * @dev Set reward rate of specific farm
+   * @param _farm Address of farm
+   * @param _rate Proportion of reward allocation for this farm
+   */
   function setRateOf(address _farm, uint256 _rate)
   external
   onlyOwner
@@ -72,6 +90,10 @@ contract FarmController is OwnableUpgradeable {
     rate[_farm] = _rate;
   }
 
+  /**
+   * @dev Notify farms about new reward available
+   * @param amount Amount to distribute among farms
+   */
   function notifyRewards(uint256 amount)
   external
   onlyOwner
@@ -83,8 +105,14 @@ contract FarmController is OwnableUpgradeable {
     }
   }
 
-  // should transfer rewardToken prior to calling this contract
-  // this is implemented to take care of the out-of-gas situation
+  /**
+   * @dev Partially notify farms about new reward available
+   * should transfer rewardToken prior to calling this contract
+   * this is implemented to take care of the out-of-gas situation
+   * @param amount Amount to distribute
+   * @param from Start index of farms
+   * @param to End index of farms
+   */
   function notifyRewardsPartial(uint256 amount, uint256 from, uint256 to)
   external
   onlyOwner
@@ -97,6 +125,10 @@ contract FarmController is OwnableUpgradeable {
     }
   }
 
+  /**
+   * @dev Check how many farms are added
+   * @returns Number of farms
+   */
   function getFarmsCount()
   external
   view
@@ -105,6 +137,11 @@ contract FarmController is OwnableUpgradeable {
     return farms.length;
   }
 
+  /**
+   * @dev Query the specific farm
+   * @param _index Index of farm
+   * @returns Farm
+   */
   function getFarm(uint _index)
   external
   view
